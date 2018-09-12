@@ -1,0 +1,11 @@
+import java.util.HashMap;
+
+import com.passlock.async.AsyncGetAccounts;
+
+public class Principal {
+
+	public static void main(String[] args) {
+		AsyncGetAccounts.getAccounts(new HashMap<String, String>());
+	}
+
+}

@@ -1,0 +1,5 @@
+package com.passlock.async;
+
+public class AsyncGetAccounts {
+
+}
