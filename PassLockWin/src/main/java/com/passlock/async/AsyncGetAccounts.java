@@ -3,7 +3,9 @@ package com.passlock.async;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -11,11 +13,12 @@ import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.passlock.aescrypt.AESCrypt;
 import com.passlock.utils.Utilidades;
 
 public class AsyncGetAccounts {
-	public static void getAccounts(Map map) {
-		map = new HashMap<>();
+	public static Map<String, List<String>> getAccounts() {
+		Map<String, List<String>> map = new HashMap<>();
 		StringBuilder result = new StringBuilder();
 
 		try {
@@ -29,73 +32,31 @@ public class AsyncGetAccounts {
 				result.append(line);
 			}
 			rd.close();
-			System.out.println(result.toString());
 			JSONArray jsonArray = new JSONArray(result.toString());
 
 			for (int i = 0; i < jsonArray.length(); i++) {
+				List<String> list = new ArrayList<>();
+
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 				JSONObject _id = jsonObject.getJSONObject("_id");
-				
+
 				String id = _id.getString("$oid");
-				String name = 
-				System.out.println(id);
+				String email = jsonObject.getString("email");
+				String password = AESCrypt.decrypt(jsonObject.getString("password"), Utilidades.PW);
+				String site = jsonObject.getString("site");
+
+				list.add(email);
+				list.add(password);
+				list.add(id);
+
+				map.put(site, list);
 			}
 
-			// JsonReader jsonReader = new JsonReader(responseReader);
-			// jsonReader.beginArray();
-			// String email = null;
-			// String password = null;
-			// String site;
-			// String _id = null;
-			// while (jsonReader.hasNext()) {
-			// jsonReader.beginObject();
-			// int count = 0;
-			// while (jsonReader.hasNext()) {
-			// if (count == 0) {
-			// jsonReader.skipValue();
-			// jsonReader.beginObject();
-			// while (jsonReader.hasNext()){
-			// String key = jsonReader.nextName();
-			// if (key.equals("$oid"))
-			// _id = jsonReader.nextString();
-			// }
-			// jsonReader.endObject();
-			// count++;
-			// } else {
-			// String key = jsonReader.nextName();
-			// switch (key) {
-			// case "email":
-			// email = jsonReader.nextString();
-			// break;
-			// case "password":
-			// password = AESCrypt.decrypt(Utilidades.PW, jsonReader.nextString());
-			// break;
-			// case "site":
-			// site = jsonReader.nextString();
-			// List<String> list = new ArrayList<>();
-			// list.add(email);
-			// list.add(password);
-			// list.add(_id);
-			// map.put(site, list);
-			// count = 0;
-			// break;
-			// }
-			// }
-			// }
-			// jsonReader.endObject();
-			// }
-			//
-			// jsonReader.endArray();
-			// jsonReader.close();
-			// con.disconnect();
-			// } catch (IOException e) {
-			// e.printStackTrace();
-			// return false;
-			// } catch (GeneralSecurityException e) {
-			// e.printStackTrace();
-			// }
+			return map;
+
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 }

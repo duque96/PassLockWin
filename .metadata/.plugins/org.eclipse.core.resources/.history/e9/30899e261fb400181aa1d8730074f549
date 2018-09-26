@@ -1,7 +1,0 @@
-package com.passlock.async;
-
-public class AsyncGetAccounts {
-	public static void getAccounts() {
-		
-	}
-}

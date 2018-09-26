@@ -1,0 +1,13 @@
+import com.passlock.async.AsyncGetAccounts;
+import com.passlock.utils.Utilidades;
+
+import AESCrypt.AESCrypt;
+
+public class Principal {
+
+	public static void main(String[] args) {
+		System.out.println(AsyncGetAccounts.getAccounts());
+		System.out.println(AESCrypt.encrypt("AhgjM_39#KGmr20@0sW_", Utilidades.PW));
+	}
+
+}

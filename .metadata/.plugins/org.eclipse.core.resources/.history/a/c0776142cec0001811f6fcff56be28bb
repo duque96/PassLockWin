@@ -1,0 +1,98 @@
+package com.passlock.igu;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
+
+import org.jvnet.substance.SubstanceLookAndFeel;
+
+import com.passlock.async.AsyncGetAccounts;
+
+public class AccountsList extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JScrollPane scrollPane;
+	private JList<String> accountsList;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					JFrame.setDefaultLookAndFeelDecorated(true);
+					JDialog.setDefaultLookAndFeelDecorated(true);
+					AccountsList frame = new AccountsList();
+					frame.setVisible(true);
+					SubstanceLookAndFeel.setSkin("org.jvnet.substance.skin.DustSkin");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public AccountsList() {
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 862, 627);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		contentPane.add(getScrollPane(), BorderLayout.CENTER);
+
+		cargarAccounts();
+	}
+
+	private JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane();
+			scrollPane.setViewportView(getAccountsList());
+		}
+		return scrollPane;
+	}
+
+	private JList<String> getAccountsList() {
+		if (accountsList == null) {
+			accountsList = new JList<String>();
+			accountsList.setFixedCellWidth(50);
+			accountsList.setFixedCellHeight(50);
+			accountsList.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 28));
+			accountsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		}
+		return accountsList;
+	}
+
+	private void cargarAccounts() {
+		Map<String, List<String>> map = AsyncGetAccounts.getAccounts();
+		Set<String> keySet = map.keySet();
+		DefaultListModel<String> model = new DefaultListModel<>();
+
+		for (String key : keySet) {
+			model.addElement(key);
+		}
+
+		accountsList.setModel(model);
+	}
+}

@@ -1,0 +1,50 @@
+package com.passlock.igu;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+
+public class AccountDetails extends JDialog {
+
+	private final JPanel contentPanel = new JPanel();
+
+	/**
+	 * Create the dialog.
+	 */
+	public AccountDetails() {
+		setResizable(false);
+		setModal(true);
+		setBounds(100, 100, 862, 627);
+		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setLayout(null);
+		
+		JLabel emailLabel = new JLabel("New label");
+		emailLabel.setBounds(410, 214, 69, 20);
+		contentPanel.add(emailLabel);
+		
+		JLabel passwordLabel = new JLabel("New label");
+		passwordLabel.setBounds(410, 301, 69, 20);
+		contentPanel.add(passwordLabel);
+		{
+			JPanel buttonPane = new JPanel();
+			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			{
+				JButton cerrarButton = new JButton("Cerrar");
+				cerrarButton.setActionCommand("Cancel");
+				buttonPane.add(cerrarButton);
+			}
+		}
+
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setVisible(true);
+
+	}
+}

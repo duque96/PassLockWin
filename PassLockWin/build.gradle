@@ -26,9 +26,6 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
     
-    // Module encryptation
-    implementation 'com.scottyab:aescrypt:0.0.1'
-    
     // Json response
     implementation 'org.json:json:20180813'
    
